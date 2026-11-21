@@ -1,105 +1,131 @@
-# 👷🏽‍♂️ Legajo Digital Minero — "Legajo en el Bolsillo"
+# Legajo Digital Minero — "Legajo en el bolsillo"
 
-> Billetera digital de acreditación minera para trabajadores del sector minero de San Juan, Argentina.
+Billetera digital de acreditación minera para trabajadores de San Juan, Argentina.
+Centraliza certificados, controla vencimientos y permite verificar la aptitud con
+un código QR dinámico, incluso sin señal en alta montaña.
 
-[![Status](https://img.shields.io/badge/status-en%20desarrollo-yellow)]()
-[![License](https://img.shields.io/badge/license-MIT-blue)]()
+> **Estado:** Día 1 de 15 — esqueleto del monorepo, API y PWA base.
+> La documentación funcional está en [`PLAN_MAESTRO.md`](./PLAN_MAESTRO.md) y
+> [`specs/`](./specs/).
 
----
+## Stack
 
-## 📋 Descripción
+| Capa | Tecnología |
+|---|---|
+| Frontend | React 19 + Vite + TypeScript + Tailwind CSS (PWA) |
+| Backend | ASP.NET Core 10 Web API + EF Core 10 |
+| Base de datos | PostgreSQL 16 |
+| Almacenamiento | Disco del VPS (`/var/www/documentos/`) |
+| Infraestructura | DonWeb VPS + Nginx + Docker Compose |
 
-**Legajo en el Bolsillo** es una Aplicación Web Progresiva (PWA) que permite a los trabajadores mineros centralizar toda su documentación obligatoria (exámenes médicos, carnets de conducir en alta montaña, cursos de seguridad, inducciones) en un único perfil digital verificable mediante código QR.
-
-### Problema que resuelve
-
-En la industria minera de San Juan, la documentación se gestiona de forma dispersa: carpetas físicas que se deterioran, fotos en el celular, PDFs por WhatsApp. Esto provoca que los trabajadores lleguen a la garita con documentación vencida, generando pérdidas de tiempo y productividad.
-
-### Solución
-
-- 📂 **Centralización:** Un único repositorio digital para todos los certificados
-- 🚦 **Semáforo de Aptitud:** Indicador visual (Verde/Amarillo/Rojo) del estado documental
-- 🔔 **Alertas Preventivas:** Notificaciones a los 15, 7, 3 días y el día del vencimiento
-- 📱 **Código QR Dinámico:** Verificación instantánea en garita sin revisar carpetas físicas
-- 📶 **Modo Offline:** Acceso a datos básicos y QR en zonas sin conectividad
-
----
-
-## 🛠️ Stack Tecnológico
-
-| Capa               | Tecnología                     |
-| ------------------- | ------------------------------ |
-| **Frontend**        | React (PWA) + TailwindCSS      |
-| **Backend**         | .NET 8 (API REST con C#)       |
-| **Base de Datos**   | PostgreSQL                     |
-| **Almacenamiento**  | Cloudinary / Azure Blob Storage|
-| **Autenticación**   | JWT (JSON Web Tokens)          |
-| **QR**              | QRCoder (.NET)                 |
-
----
-
-## 📁 Estructura del Proyecto
+## Estructura
 
 ```
-legajo-digital-minero/
-├── frontend/          # Aplicación React (PWA)
-├── backend/           # API REST en .NET 8
-├── docs/              # Documentación del proyecto
-│   ├── diagramas/     # Diagramas E-R, arquitectura, flujos
-│   └── capturas/      # Capturas de pantalla de la app
-├── scripts/           # Scripts útiles (setup de BD, seeds, etc.)
-├── .gitignore
-├── CHANGELOG.md       # Registro de cambios por día/sprint
-└── README.md
+.
+├─ backend/
+│  ├─ LegajoMinero.sln
+│  ├─ LegajoMinero.Api/        # Domain / Application / Infrastructure / Controllers
+│  └─ LegajoMinero.Tests/      # xUnit
+├─ frontend/                   # PWA React + Vite
+├─ deploy/                     # Docker, Nginx y compose (Parte 5)
+├─ docs/                       # Diagramas y capturas
+├─ scripts/                    # Utilidades de desarrollo (PostgreSQL local)
+├─ specs/                      # Especificación de las 5 partes
+├─ PLAN_MAESTRO.md             # Plan maestro y decisiones
+└─ prototipo.png               # Referencia visual del dashboard
 ```
 
----
+## Requisitos
 
-## 🗄️ Modelo de Base de Datos
+- .NET SDK 10 (`dotnet --version`)
+- Node.js 22+ y npm
+- PostgreSQL 16 (o el script portable de `scripts/`)
 
-### Entidades Principales
+## Puesta en marcha
 
-| #  | Entidad          | Descripción                                              |
-| -- | ---------------- | -------------------------------------------------------- |
-| 1  | USUARIO          | Trabajador minero registrado en el sistema               |
-| 2  | DOCUMENTO        | Certificado o archivo cargado por el trabajador          |
-| 3  | TIPO_DOCUMENTO   | Catálogo de tipos (examen médico, carnet, curso, etc.)   |
-| 4  | ALERTA           | Notificaciones enviadas al trabajador                    |
-| 5  | VERIFICACION     | Registro de escaneos QR por personal autorizado          |
-| 6  | SESION           | Registro de inicios de sesión                            |
-| 7  | BACKUP           | Registro de copias de seguridad del sistema              |
+### 1. Base de datos
 
----
+En desarrollo se usa un PostgreSQL portable dentro del perfil del usuario, sin
+permisos de administrador:
 
-## 🚦 Semáforo de Aptitud
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/setup-local-db.ps1
+```
 
-| Color      | Significado                                                  |
-| ---------- | ------------------------------------------------------------ |
-| 🟢 Verde   | Todos los documentos vigentes                                |
-| 🟡 Amarillo | Algún documento vence en los próximos 15 días               |
-| 🔴 Rojo    | Algún documento vencido o falta documentación obligatoria    |
+Luego, para iniciar o detener el servidor:
 
----
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/start-local-db.ps1
+powershell -ExecutionPolicy Bypass -File scripts/stop-local-db.ps1
+```
 
-## 📅 Roadmap de Desarrollo
+La base se llama `legajo_minero`, usuario `postgres`, puerto `5432`.
 
-- [x] **Semana 1:** Backend base, BD PostgreSQL, Autenticación JWT
-- [ ] **Semana 2:** Lógica de negocio (semáforo, QR, storage de archivos)
-- [ ] **Semana 3:** Frontend React PWA (Dashboard, formularios, QR)
-- [ ] **Semana 4:** Modo Offline, QA, despliegue y documentación final
+### 2. Backend
 
----
+Copiá `backend/LegajoMinero.Api/appsettings.Development.example.json` a
+`appsettings.Development.json` y ajustá las claves locales. El archivo real está
+ignorado por Git.
 
-## 👤 Autor
+```powershell
+cd backend
+dotnet run --project LegajoMinero.Api
+```
 
-**Juan José Sanchez García**
-Tecnicatura Universitaria en Desarrollo de Software
-Facultad de Ciencias Económicas y Empresariales
+- API: <http://localhost:5235>
+- Health: <http://localhost:5235/health>
+- OpenAPI: <http://localhost:5235/openapi/v1.json>
+- Scalar UI: <http://localhost:5235/scalar/v1>
 
-**Tutores:** Cristian Fernández — Fernando Mas
+### 3. Frontend
 
----
+```powershell
+cd frontend
+npm install
+npm run dev
+```
 
-## 📄 Licencia
+La PWA queda en <http://localhost:5173> y el proxy `/api` apunta al backend.
 
-Este proyecto es parte de un Trabajo Final de Título (TFT) con fines académicos.
+### 4. Pruebas
+
+```powershell
+cd backend
+dotnet test
+```
+
+```powershell
+cd frontend
+npm run build
+```
+
+## Alcance acordado
+
+- **Una empresa por instalación**: el DER de la tesis tiene 7 entidades y no
+  incluye la entidad `empresa`.
+- Alertas "push" implementadas como avisos in-app + correo electrónico, sin
+  Web Push/FCM externo.
+- Backups con `pg_dump` real y copia descargable fuera del VPS.
+
+## Roadmap
+
+| Día | Entregable |
+|---|---|
+| 1 | Repo, PostgreSQL, API base, PWA shell, CI |
+| 2 | 7 entidades, AES-256, migración y seeder |
+| 3–4 | Autenticación, perfil y sesiones |
+| 5–7 | Documentos, semáforo, QR y garita |
+| 8–10 | Panel RRHH, alertas y backups |
+| 11–13 | PWA del trabajador y modo offline |
+| 14–15 | Panel RRHH completo, despliegue y smoke test |
+
+## Documentación
+
+- [Plan maestro](./PLAN_MAESTRO.md)
+- [Parte 1 — Base de datos y auth](./specs/PARTE_1_BASE_DATOS_Y_AUTH.md)
+- [Parte 2 — Documentos, semáforo y garita](./specs/PARTE_2_DOCUMENTOS_SEMAFORO_Y_GARITA.md)
+- [Parte 3 — RRHH y alertas](./specs/PARTE_3_MODULO_RRHH_Y_ALERTAS.md)
+- [Parte 4 — PWA del trabajador y offline](./specs/PARTE_4_FRONTEND_PWA_TRABAJADOR_Y_OFFLINE.md)
+- [Parte 5 — Panel RRHH, despliegue y cierre](./specs/PARTE_5_PANEL_RRHH_DEPLOY_DONWEB_Y_CIERRE.md)
+- `TFT_Entrega_1.docx` y `TFT_Entrega_2_Actualizado.docx`: documento de tesis
+  (no versionados, se conservan localmente).

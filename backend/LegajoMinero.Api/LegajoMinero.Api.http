@@ -1,0 +1,13 @@
+@host = http://localhost:5235
+
+### Raíz de la API
+GET {{host}}/
+
+### Health check
+GET {{host}}/health
+
+### Documento OpenAPI
+GET {{host}}/openapi/v1.json
+
+### UI Scalar (abrir en el navegador)
+# http://localhost:5235/scalar/v1

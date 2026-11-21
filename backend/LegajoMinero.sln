@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegajoMinero.Api", "LegajoMinero.Api\LegajoMinero.Api.csproj", "{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegajoMinero.Tests", "LegajoMinero.Tests\LegajoMinero.Tests.csproj", "{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Debug|x64.Build.0 = Debug|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Debug|x86.Build.0 = Debug|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Release|x64.ActiveCfg = Release|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Release|x64.Build.0 = Release|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Release|x86.ActiveCfg = Release|Any CPU
+		{F4CB6C57-32F7-491D-B546-B51E9A1F3EB2}.Release|x86.Build.0 = Release|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Debug|x64.Build.0 = Debug|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Debug|x86.Build.0 = Debug|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Release|x64.ActiveCfg = Release|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Release|x64.Build.0 = Release|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Release|x86.ActiveCfg = Release|Any CPU
+		{20205FAE-347C-4C8E-9CDB-4A0BA13A5E6C}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

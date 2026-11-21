@@ -13,6 +13,9 @@ obj/
 .vs/
 *.DotSettings.user
 appsettings.Development.json
+coverage/
+*.trx
+TestResults/
 
 # ==========================
 # Node.js / React
@@ -20,6 +23,8 @@ appsettings.Development.json
 node_modules/
 dist/
 build/
+.vite/
+coverage/
 .env
 .env.local
 .env.development.local
@@ -30,10 +35,19 @@ yarn-debug.log*
 yarn-error.log*
 
 # ==========================
+# Base de datos y archivos
+# ==========================
+storage/
+*.dump
+*.backup
+*.zip
+
+# ==========================
 # IDEs
 # ==========================
 .idea/
 .vscode/
+.opencode/
 *.swp
 *.swo
 *~
@@ -46,8 +60,6 @@ Thumbs.db
 desktop.ini
 
 # ==========================
-# Proyecto - Archivos temporales
+# Proyecto - Archivos locales
 # ==========================
 *.docx
-*.txt
-extract.py
