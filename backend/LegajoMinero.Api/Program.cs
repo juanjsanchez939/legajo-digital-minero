@@ -1,6 +1,11 @@
 using System.Threading.RateLimiting;
+using LegajoMinero.Api.Domain.Entities;
+using LegajoMinero.Api.Infrastructure.Data;
+using LegajoMinero.Api.Infrastructure.Security;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 builder.Services.AddHealthChecks();
+
+builder.Services.AddSingleton<AesEncryptionService>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
 
 var allowedOrigins = builder.Configuration
     .GetSection("Cors:AllowedOrigins")
@@ -43,6 +53,12 @@ builder.Services.AddRateLimiter(options =>
 });
 
 var app = builder.Build();
+
+// Migra y siembra al arrancar. Los tests lo desactivan con Database:AutoMigrate=false.
+if (app.Configuration.GetValue("Database:AutoMigrate", true))
+{
+    await DbInitializer.InitializeAsync(app.Services);
+}
 
 // Debe ir antes del rate limiter para que la partición use la IP real del cliente.
 app.UseForwardedHeaders();

@@ -4,7 +4,7 @@ Billetera digital de acreditación minera para trabajadores de San Juan, Argenti
 Centraliza certificados, controla vencimientos y permite verificar la aptitud con
 un código QR dinámico, incluso sin señal en alta montaña.
 
-> **Estado:** Día 1 de 15 — esqueleto del monorepo, API y PWA base.
+> **Estado:** Día 2 de 15 — modelo de datos (7 entidades), migración inicial y seeder.
 > La documentación funcional está en [`PLAN_MAESTRO.md`](./PLAN_MAESTRO.md) y
 > [`specs/`](./specs/).
 
@@ -45,21 +45,17 @@ un código QR dinámico, incluso sin señal en alta montaña.
 
 ### 1. Base de datos
 
-En desarrollo se usa un PostgreSQL portable dentro del perfil del usuario, sin
-permisos de administrador:
+En esta máquina se usa el servicio de Windows **`postgresql-x64-16`** en el
+puerto **5433**, con la base `legajo_minero`, usuario `postgres` y contraseña
+`postgres` (solo desarrollo). El servicio arranca automáticamente.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/setup-local-db.ps1
-```
+Si el servicio no existe, `scripts/setup-local-db.ps1` crea un PostgreSQL
+portable en el mismo puerto. Los scripts `start-local-db.ps1` y
+`stop-local-db.ps1` manejan únicamente ese cluster portable; no tocan el
+servicio de Windows.
 
-Luego, para iniciar o detener el servidor:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/start-local-db.ps1
-powershell -ExecutionPolicy Bypass -File scripts/stop-local-db.ps1
-```
-
-La base se llama `legajo_minero`, usuario `postgres`, puerto `5432`.
+La API aplica las migraciones y ejecuta el seeder al arrancar
+(`Database:AutoMigrate=true`).
 
 ### 2. Backend
 
