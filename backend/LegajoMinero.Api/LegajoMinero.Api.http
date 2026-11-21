@@ -1,4 +1,6 @@
 @host = http://localhost:5235
+@email = rrhh@legajominero.com.ar
+@password = LegajoMinero2026!
 
 ### Raíz de la API
 GET {{host}}/
@@ -11,3 +13,59 @@ GET {{host}}/openapi/v1.json
 
 ### UI Scalar (abrir en el navegador)
 # http://localhost:5235/scalar/v1
+
+### Registro de trabajador
+POST {{host}}/api/auth/registrar
+Content-Type: application/json
+
+{
+  "nombreCompleto": "Juan Pérez",
+  "dni": "30123456",
+  "email": "juan.perez@example.com",
+  "telefono": "2641234567",
+  "especialidad": "Operador",
+  "contrasena": "ClaveSegura123",
+  "aceptaConsentimientoDatos": true
+}
+
+### Login del administrador sembrado
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "contrasena": "{{password}}"
+}
+
+### Refresh token (pegar el refreshToken devuelto por login)
+POST {{host}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "PEGAR_REFRESH_TOKEN"
+}
+
+### Logout (invalida el refresh token)
+POST {{host}}/api/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "PEGAR_REFRESH_TOKEN"
+}
+
+### Solicitar recuperación de contraseña
+POST {{host}}/api/auth/solicitar-recuperacion
+Content-Type: application/json
+
+{
+  "email": "juan.perez@example.com"
+}
+
+### Restablecer contraseña (token del enlace)
+POST {{host}}/api/auth/restablecer-contrasena
+Content-Type: application/json
+
+{
+  "token": "PEGAR_TOKEN",
+  "nuevaContrasena": "NuevaClave123"
+}

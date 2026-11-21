@@ -4,7 +4,8 @@ Billetera digital de acreditación minera para trabajadores de San Juan, Argenti
 Centraliza certificados, controla vencimientos y permite verificar la aptitud con
 un código QR dinámico, incluso sin señal en alta montaña.
 
-> **Estado:** Día 2 de 15 — modelo de datos (7 entidades), migración inicial y seeder.
+> **Estado:** Día 3 de 15 — autenticación completa (registro, login con bloqueo,
+> JWT + refresh rotativo, logout y recuperación de contraseña).
 > La documentación funcional está en [`PLAN_MAESTRO.md`](./PLAN_MAESTRO.md) y
 > [`specs/`](./specs/).
 
@@ -39,7 +40,7 @@ un código QR dinámico, incluso sin señal en alta montaña.
 
 - .NET SDK 10 (`dotnet --version`)
 - Node.js 22+ y npm
-- PostgreSQL 16 (o el script portable de `scripts/`)
+- PostgreSQL 16 (servicio de Windows en 5433; fallback portable en `scripts/`)
 
 ## Puesta en marcha
 
@@ -73,6 +74,21 @@ dotnet run --project LegajoMinero.Api
 - OpenAPI: <http://localhost:5235/openapi/v1.json>
 - Scalar UI: <http://localhost:5235/scalar/v1>
 
+### Endpoints de autenticación
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| `POST` | `/api/auth/registrar` | Alta de trabajador; fuerza rol `TRABAJADOR` y exige consentimiento |
+| `POST` | `/api/auth/login` | Login con bloqueo de 15 minutos tras 5 intentos fallidos |
+| `POST` | `/api/auth/refresh` | Rotación del refresh token y nuevo access token |
+| `POST` | `/api/auth/logout` | Invalida la sesión (refresh token) |
+| `POST` | `/api/auth/solicitar-recuperacion` | Envía el enlace de recuperación (1 hora) |
+| `POST` | `/api/auth/restablecer-contrasena` | Cambia la contraseña y cierra sesiones |
+
+El administrador sembrado en desarrollo es `rrhh@legajominero.com.ar` con la
+contraseña definida en `Seed:AdminPassword` (por defecto `LegajoMinero2026!`).
+En desarrollo el correo de recuperación se escribe en el log de la API.
+
 ### 3. Frontend
 
 ```powershell
@@ -85,6 +101,10 @@ La PWA queda en <http://localhost:5173> y el proxy `/api` apunta al backend.
 
 ### 4. Pruebas
 
+Los tests de integración crean una base PostgreSQL aislada por factory
+(`legajo_tests_*`) y la eliminan al terminar. El CI levanta `postgres:16` en el
+puerto 5433.
+
 ```powershell
 cd backend
 dotnet test
@@ -94,6 +114,14 @@ dotnet test
 cd frontend
 npm run build
 ```
+
+## Flujo de trabajo Git
+
+- `main` recibe cambios únicamente por pull request.
+- Cada día se trabaja en una rama `feat/day-N-...` o `fix/...`.
+- El PR corre el CI completo (build, tests y lint) y se mergea recién con la
+  revisión del responsable.
+- No se commitean secretos: `appsettings.Development.json` está ignorado.
 
 ## Alcance acordado
 
