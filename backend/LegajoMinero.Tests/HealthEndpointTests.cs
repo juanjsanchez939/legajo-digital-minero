@@ -1,17 +1,6 @@
 using System.Net;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace LegajoMinero.Tests;
-
-public class ApiFactory : WebApplicationFactory<Program>
-{
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        // Los tests de integración no deben tocar la base real ni correr el seeder.
-        builder.UseSetting("Database:AutoMigrate", "false");
-    }
-}
 
 public class HealthEndpointTests : IClassFixture<ApiFactory>
 {
